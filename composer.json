@@ -1,0 +1,5 @@
+{
+    "require": {
+        "rhurling/nonces": "^3.0"
+    }
+}
