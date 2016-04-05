@@ -68,7 +68,7 @@ function wp_verify_nonce($nonce, $action = -1)
 	$verifier->setSalt(wp_salt('nonce'));
 
 	$nonce    = (string)$nonce;
-	$verified = $verifier->verify($nonce);
+	$verified = $verifier->verify($nonce, $action);
 	if (false !== $verified) {
 		return $verified;
 	}
