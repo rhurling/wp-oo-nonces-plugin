@@ -1,18 +1,17 @@
 <?php
 
-class TestCreateNonce extends PHPUnit_Framework_TestCase {
+use WP_Mock\Tools\TestCase;
+
+class TestCreateNonce extends TestCase {
 
 	static $time = 1458891857;
 	static $nonce = 'c9b9978685';
 	static $actionNonce = '296101f60a';
 
 	public function setUp() {
+		parent::setUp();
+		
 		RouvenHurling\Nonces\time( self::$time );
-		\WP_Mock::setUp();
-	}
-
-	public function tearDown() {
-		\WP_Mock::tearDown();
 	}
 
 	public function testCreation() {
