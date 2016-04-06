@@ -17,7 +17,7 @@ class TestCreateNonce extends TestCase {
 	public function testCreation() {
 		$user     = new stdClass();
 		$user->ID = 1;
-		\WP_Mock::wpFunction(
+		WP_Mock::wpFunction(
 			'wp_get_current_user',
 			[
 				'times'  => 2,
@@ -25,7 +25,7 @@ class TestCreateNonce extends TestCase {
 			]
 		);
 
-		\WP_Mock::wpFunction(
+		WP_Mock::wpFunction(
 			'wp_salt',
 			[
 				'args'   => [ 'nonce' ],
@@ -34,7 +34,7 @@ class TestCreateNonce extends TestCase {
 			]
 		);
 
-		\WP_Mock::wpFunction(
+		WP_Mock::wpFunction(
 			'wp_get_session_token',
 			[
 				'times' => 2,
