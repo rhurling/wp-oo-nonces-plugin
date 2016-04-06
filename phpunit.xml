@@ -11,13 +11,13 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="WP OO Nonces Test Suite">
-            <directory suffix=".php">./tests/</directory>
-            <exclude>./tests/bootstrap.php</exclude>
+            <directory prefix="Test" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <file>./wp-oo-nonces-plugin.php</file>
+            <file>./pluggable-functions.php</file>
         </whitelist>
     </filter>
 </phpunit>
