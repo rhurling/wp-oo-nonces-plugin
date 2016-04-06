@@ -6,17 +6,43 @@ class TestVerifyNonce extends PHPUnit_Framework_TestCase {
 	static $nonce = 'c9b9978685';
 	static $actionNonce = '296101f60a';
 
-	public static function setUpBeforeClass() {
-		\wp_salt( '', 'salt' );
-		\wp_get_current_user( 1 );
-		\wp_get_session_token( 'session-1' );
-	}
-
 	public function setUp() {
 		RouvenHurling\Nonces\time( self::$time );
+		\WP_Mock::setUp();
+	}
+
+	public function tearDown() {
+		\WP_Mock::tearDown();
 	}
 
 	public function testVerfication() {
+		$user     = new stdClass();
+		$user->ID = 1;
+		\WP_Mock::wpFunction(
+			'wp_get_current_user',
+			[
+				'times'  => 5,
+				'return' => $user
+			]
+		);
+
+		\WP_Mock::wpFunction(
+			'wp_salt',
+			[
+				'args'   => [ 'nonce' ],
+				'times'  => 5,
+				'return' => 'salt'
+			]
+		);
+
+		\WP_Mock::wpFunction(
+			'wp_get_session_token',
+			[
+				'times' => 5,
+				'return' => 'session-1'
+			]
+		);
+
 		$this->assertFalse( wp_verify_nonce( '' ), 'Empty Nonce' );
 		$this->assertEquals( 1, wp_verify_nonce( self::$actionNonce, 'action' ), 'Nonce with action' );
 
@@ -29,12 +55,6 @@ class TestVerifyNonce extends PHPUnit_Framework_TestCase {
 		RouvenHurling\Nonces\time( self::$time + 3600 * 24 );
 
 		$this->assertFalse( wp_verify_nonce( self::$nonce ), 'Nonce older than 24 hours' );
-	}
-
-	public static function tearDownAfterClass() {
-		\wp_salt( '', null );
-		\wp_get_current_user( null );
-		\wp_get_session_token( null );
 	}
 
 }

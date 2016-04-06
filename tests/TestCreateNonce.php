@@ -6,28 +6,48 @@ class TestCreateNonce extends PHPUnit_Framework_TestCase {
 	static $nonce = 'c9b9978685';
 	static $actionNonce = '296101f60a';
 
-	public static function setUpBeforeClass() {
-		\wp_salt( '', 'salt' );
-		\wp_get_current_user( 1 );
-		\wp_get_session_token( 'session-1' );
-	}
-
 	public function setUp() {
 		RouvenHurling\Nonces\time( self::$time );
+		\WP_Mock::setUp();
+	}
+
+	public function tearDown() {
+		\WP_Mock::tearDown();
 	}
 
 	public function testCreation() {
+		$user     = new stdClass();
+		$user->ID = 1;
+		\WP_Mock::wpFunction(
+			'wp_get_current_user',
+			[
+				'times'  => 2,
+				'return' => $user
+			]
+		);
+
+		\WP_Mock::wpFunction(
+			'wp_salt',
+			[
+				'args'   => [ 'nonce' ],
+				'times'  => 2,
+				'return' => 'salt'
+			]
+		);
+
+		\WP_Mock::wpFunction(
+			'wp_get_session_token',
+			[
+				'times' => 2,
+				'return' => 'session-1'
+			]
+		);
+
 		$nonce = wp_create_nonce();
 		$this->assertEquals( self::$nonce, $nonce );
 
 		$nonce = wp_create_nonce( 'action' );
 		$this->assertEquals( self::$actionNonce, $nonce );
-	}
-
-	public static function tearDownAfterClass() {
-		\wp_salt( '', null );
-		\wp_get_current_user( null );
-		\wp_get_session_token( null );
 	}
 
 }
