@@ -16,7 +16,6 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <file>./wp-oo-nonces-plugin.php</file>
             <file>./pluggable-functions.php</file>
         </whitelist>
     </filter>
