@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: WordPress Object Oriented Nonces Plugin
-Version: 1.1.1
+Version: 1.2
 Author: Rouven Hurling
 License: GPL2
 */
